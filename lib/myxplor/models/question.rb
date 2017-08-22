@@ -1,15 +1,13 @@
 module Myxplor
-  module Models
-    class Question
+  class Question
 
-      attr_accessor :theme, :type, :text
+    attr_accessor :theme, :type, :text
 
-      def initialize(theme, type, text)
-        @theme = theme
-        @type = type
-        @text = text
-      end
-
+    def initialize(theme, type, text)
+      @theme = theme
+      @type = type
+      @text = text
     end
+
   end
 end

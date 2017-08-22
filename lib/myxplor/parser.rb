@@ -15,12 +15,12 @@ module Myxplor
       parser = OptionParser.new do |opts|
         opts.banner = "Myxplor Code Test"
 
-        opts.on('--s', '--survey file', 'Survey data file') do |opt|
-          @options[:survey_file_path] = opt
+        opts.on('--q', '--question file', 'Question data file') do |opt|
+          options[:survey_file_path] = opt
         end
 
         opts.on('--r', '--response file', 'Response data file') do |opt|
-          @options[:response_file_path] = opt
+          options[:response_file_path] = opt
         end
       end
 

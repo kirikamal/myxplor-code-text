@@ -6,13 +6,13 @@ module Myxplor
 
 		attr_accessor :survey_file, :response_file
 
-		def initialize(survey_file, response_file)
-			@survey_file = survey_file
-			@response_file = response_file	
+		def initialize(survey_file_path:, response_file_path:)
+			@survey_file = File.new(survey_file)
+			@response_file = File.new(response_file)
 		end
 
 		def process_survey_data
-			CVS.new(survey_file, headers: true, header_converters: :symbol).to_a.map(&:to_hash)
+			CSV.new(survey_file, headers: true, header_converters: :symbol).to_a.map(&:to_hash)
 		end
 
 		def process_response_data
@@ -27,7 +27,7 @@ module Myxplor
 		end
 
 		def number_of_submission
-			
+
 		end
 	end
 end
