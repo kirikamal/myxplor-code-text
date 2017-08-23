@@ -1,8 +1,7 @@
-
 require 'csv'
 
 module Myxplor
-	class Process
+	class Processor
 
 		attr_accessor :survey_file, :response_file
 

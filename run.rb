@@ -44,32 +44,38 @@ class Parser
       {
         email: row[0],
         employee_id: row[1],
-        submitted_id: row[2],
+        submitted_at: row[2],
         answers: row[3..-1]
       }
     end
 
+    puts "Survey Data: #{survey_data.inspect}"
+    puts "Res Data: #{response_data.inspect}"
     @responses ||= response_data.map do |rp|
-      Myxplor::Response.new(survey: survey_data, **response_data)
+      Myxplor::Response.new(survey: survey_data, **rp)
     end
 
-    puts responses.length
+    responses_count = @responses.length
+    puts "Res count #{responses_count}"
+
+    submitted_count = response_data.select{|x| x[:submitted_at]!=nil }
+    submitted_responses_count = submitted_count.length
+    puts "Sub count #{submitted_responses_count}"
+
+    # Part 1
+    participation_percentage = ((submitted_responses_count.to_f / responses_count) * 100).round(2)
+    puts "Participation %: #{participation_percentage}"
+
+    participant_count = submitted_responses_count
+    puts "Participant count: #{participant_count}"
+
+    # Part 2
+
+
+
   end
 
-  def process_survey_data
-    CSV.new(survey_file, headers: true, header_converters: :symbol).to_a.map(&:to_hash)
-  end
 
-  def process_response_data
-    CSV.new(response_file).to_a.map do |row|
-      {
-        email: row[0],
-        employee_id: row[1],
-        submitted_id: row[2],
-        answers: row[3..-1]
-      }
-    end
-  end
 
 end
 
