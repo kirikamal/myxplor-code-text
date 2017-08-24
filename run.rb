@@ -1,6 +1,7 @@
 require 'optparse'
 require 'csv'
 require_relative "lib/myxplor/models/response"
+require_relative "lib/myxplor/models/question"
 
 class Parser
 
@@ -49,18 +50,19 @@ class Parser
       }
     end
 
-    puts "Survey Data: #{survey_data.inspect}"
-    puts "Res Data: #{response_data.inspect}"
+    # puts "Survey Data: #{survey_data.inspect}"
+    # puts "Res Data: #{response_data.inspect}"
     @responses ||= response_data.map do |rp|
       Myxplor::Response.new(survey: survey_data, **rp)
     end
 
     responses_count = @responses.length
-    puts "Res count #{responses_count}"
+    # puts "Res count #{responses_count}"
 
-    submitted_count = response_data.select{|x| x[:submitted_at]!=nil }
-    submitted_responses_count = submitted_count.length
-    puts "Sub count #{submitted_responses_count}"
+    submitted_responses = response_data.select{|x| x[:submitted_at]!=nil }
+    submitted_responses_count = submitted_responses.length
+    # puts "Submited Responses #{submitted_responses}"
+    # puts "Sub count #{submitted_responses_count}"
 
     # Part 1
     participation_percentage = ((submitted_responses_count.to_f / responses_count) * 100).round(2)
@@ -70,7 +72,18 @@ class Parser
     puts "Participant count: #{participant_count}"
 
     # Part 2
+    @questions ||= survey_data.map do |q|
+      Myxplor::Question.new(**q)
+    end
+    puts "Questions ; #{@questions.inspect}"
 
+
+    @questions.select{ |q| q[:type] == "ratingquestion"}
+
+
+
+    answers = survey_data.select { |a| a[:type] == "ratingquestion"}
+    
 
 
   end

@@ -3,7 +3,7 @@ module Myxplor
 
     attr_accessor :theme, :type, :text
 
-    def initialize(theme, type, text)
+    def initialize(theme:, type:, text:)
       @theme = theme
       @type = type
       @text = text
