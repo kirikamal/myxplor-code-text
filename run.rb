@@ -75,15 +75,27 @@ class Parser
     @questions ||= survey_data.map do |q|
       Myxplor::Question.new(**q)
     end
-    puts "Questions ; #{@questions.inspect}"
+    # puts "Questions : #{@questions.inspect}"
+
+    quest = @questions.select{ |q| q.type == "ratingquestion"}
+    # puts "Quest : #{quest.inspect}"
+
+    number_of_rating_questions = quest.length
+    puts "Rating count: #{number_of_rating_questions}"
+
+    qs = []
+    quest.each do |q|
+      qs << q.text
+    end
+
+    puts "QsArray #{qs.inspect}"
 
 
-    @questions.select{ |q| q[:type] == "ratingquestion"}
+    submitted_responses.each do |sub|
+      puts "Answers #{sub[:answers]}"
+      puts "Q&A #{qs.zip(sub[:answers]).inspect}"
+    end
 
-
-
-    answers = survey_data.select { |a| a[:type] == "ratingquestion"}
-    
 
 
   end

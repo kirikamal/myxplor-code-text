@@ -15,5 +15,16 @@ module Myxplor
       !submitted_at.nil?
     end
 
+    def answers_by_type(type)
+        answers_with_type.select { |answer| answer[type.to_s] }
+                         .map    { |answer| answer[type.to_s] }
+      end
+
+      private
+
+      def answers_with_type
+        survey.questions.map(&:type).zip(answers).map { |ele| { ele[0] => ele[1] } }
+      end
+
   end
 end
