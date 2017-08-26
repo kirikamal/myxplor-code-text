@@ -3,7 +3,7 @@
 How to run the program
 
 ### Command
-ruby run.rb --s "<Survey csv file>" --r "<Survey response csv file>"
+ruby run.rb --s "Survey csv file location" --r "Survey response csv file location"
 
 ruby run.rb --s sample-data/survey-1.csv --r sample-data/survey-1-responses.csv
 
@@ -14,7 +14,8 @@ Command exmplanation
 * sample-data is a folder where all the csv files are stored
 
 
-About The Test
+
+## About The Technical Test
 Your task is to build a CLI application to parse and display survey data from CSV files, and display the results.
 
 ## Data Format
