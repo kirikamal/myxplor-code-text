@@ -88,14 +88,49 @@ class Parser
       qs << q.text
     end
 
-    puts "QsArray #{qs.inspect}"
+    # qa = []
+    # submitted_responses.each do |sub|
+    #   qa << qs.zip(sub[:answers])
+
+    #   # puts "Q&A #{qs.zip(sub[:answers]).inspect}"
+    #   puts "A #{sub[:answers].inspect}"
+    # end
 
 
-    submitted_responses.each do |sub|
-      puts "Answers #{sub[:answers]}"
-      puts "Q&A #{qs.zip(sub[:answers]).inspect}"
+    # qas = []
+    # i = 0
+    # quest.each do |x|
+    #   qa = []
+    #   qa << x.text
+    #   submitted_responses.each do |sub|
+    #     qa << sub[:answers][i]
+    #   end
+    #   i = i+1
+    #   qas << qa
+    # end
+
+    qas = []
+    i = 0
+    quest.each do |x|
+      qa = {}
+      qa = {:question => x.text }
+      answers = []
+      submitted_responses.each do |sub|
+        answers << sub[:answers][i]
+      end
+      qa[:answers] = answers
+      i = i+1
+      qas << qa
     end
 
+
+
+    # puts "QS -> #{qs.inspect}"
+      puts "QA -> #{qas.inspect}"
+
+    # qa.each do |q|
+    #   puts "Q -> #{q.inspect}"
+    # end
 
 
   end
