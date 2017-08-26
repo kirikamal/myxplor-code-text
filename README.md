@@ -2,14 +2,16 @@
 
 How to run the program
 
-Included in the folder example-data are three sample data files defining surveys:
-* --s sruver data file
-* --r response data file
-* sample-data is a folder where all the csv files are stored
-
 ### Command
+ruby run.rb -- <Survey csv file> --r <Survey response csv file>
 
 ruby run.rb --s sample-data/survey-1.csv --r sample-data/survey-1-responses.csv
+
+
+Command exmplanation
+* --s suvery data file
+* --r response data file
+* sample-data is a folder where all the csv files are stored
 
 
 About The Test
