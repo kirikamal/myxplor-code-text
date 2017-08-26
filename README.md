@@ -3,7 +3,7 @@
 How to run the program
 
 ### Command
-ruby run.rb -- <Survey csv file> --r <Survey response csv file>
+ruby run.rb --s "<Survey csv file>" --r "<Survey response csv file>"
 
 ruby run.rb --s sample-data/survey-1.csv --r sample-data/survey-1-responses.csv
 
