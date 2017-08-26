@@ -2,8 +2,9 @@ require 'optparse'
 require 'csv'
 require_relative "lib/myxplor/models/response"
 require_relative "lib/myxplor/models/question"
+require_relative "lib/myxplor/processor"
 
-class Parser
+class ParserProcess
 
   attr_accessor :options
 
@@ -13,7 +14,7 @@ class Parser
     @options = { :survey_file_path => nil, :response_file_path => nil }
   end
 
-  def self.parse
+  def parse
     options = { :survey_file_path => nil, :response_file_path => nil }
 
     parser = OptionParser.new do |opts|
@@ -30,82 +31,13 @@ class Parser
 
     parser.parse!
 
-    processor(**options)
+    Myxplor::Processor.new.process_data(**options)
 
   end
 
-  def self.processor(survey_file_path:, response_file_path:)
-    @survey_file = File.new(survey_file_path)
-    @response_file = File.new(response_file_path)
-
-    survey_data = CSV.new(@survey_file, headers: true, header_converters: :symbol).to_a.map(&:to_hash)
-
-    response_data = CSV.new(@response_file).to_a.map do |row|
-      {
-        email: row[0],
-        employee_id: row[1],
-        submitted_at: row[2],
-        answers: row[3..-1]
-      }
-    end
-
-    @responses ||= response_data.map do |rp|
-      Myxplor::Response.new(survey: survey_data, **rp)
-    end
-
-    responses_count = @responses.length
-
-    submitted_responses = response_data.select{|x| x[:submitted_at]!=nil }
-    submitted_responses_count = submitted_responses.length
-
-    # Part 1
-    participation_percentage = ((submitted_responses_count.to_f / responses_count) * 100).round(2)
-    puts "Participation %: #{participation_percentage}"
-
-    participant_count = submitted_responses_count
-    puts "Participant count: #{participant_count}"
-
-
-
-    # Part 2
-    @questions ||= survey_data.map do |q|
-      Myxplor::Question.new(**q)
-    end
-
-    quest = @questions.select{ |q| q.type == "ratingquestion"}
-
-    number_of_rating_questions = quest.length
-    puts "Rating count: #{number_of_rating_questions}"
-
-    qs = []
-    quest.each do |q|
-      qs << q.text
-    end
-
-    qas = []
-    count = 0
-
-    quest.each do |x|
-      qa = {}
-      answers = []
-      qa = {:question => x.text }
-      submitted_responses.each do |sub|
-        answers << sub[:answers][count].to_i
-      end
-      qa[:answers] = answers
-      count = count + 1
-      qas << qa
-    end
-
-    puts "Rating Questions"
-    puts "----------------"
-    qas.each do |arr|
-      ans = arr[:answers].sum / number_of_rating_questions.to_f
-      puts "Average Rating: #{ans} | Question: #{arr[:question]}"
-    end
-
-  end
 end
 
-Parser.new
-Parser.parse
+# run the programm
+
+p = ParserProcess.new
+p.parse
