@@ -25,7 +25,6 @@ class Parser
 
       opts.on('--r', '--response file', 'Response data file') do |opt|
         options[:response_file_path] = opt
-        puts "#{options.inspect}"
       end
     end
 
@@ -50,19 +49,14 @@ class Parser
       }
     end
 
-    # puts "Survey Data: #{survey_data.inspect}"
-    # puts "Res Data: #{response_data.inspect}"
     @responses ||= response_data.map do |rp|
       Myxplor::Response.new(survey: survey_data, **rp)
     end
 
     responses_count = @responses.length
-    # puts "Res count #{responses_count}"
 
     submitted_responses = response_data.select{|x| x[:submitted_at]!=nil }
     submitted_responses_count = submitted_responses.length
-    # puts "Submited Responses #{submitted_responses}"
-    # puts "Sub count #{submitted_responses_count}"
 
     # Part 1
     participation_percentage = ((submitted_responses_count.to_f / responses_count) * 100).round(2)
@@ -71,14 +65,14 @@ class Parser
     participant_count = submitted_responses_count
     puts "Participant count: #{participant_count}"
 
+
+
     # Part 2
     @questions ||= survey_data.map do |q|
       Myxplor::Question.new(**q)
     end
-    # puts "Questions : #{@questions.inspect}"
 
     quest = @questions.select{ |q| q.type == "ratingquestion"}
-    # puts "Quest : #{quest.inspect}"
 
     number_of_rating_questions = quest.length
     puts "Rating count: #{number_of_rating_questions}"
@@ -88,55 +82,29 @@ class Parser
       qs << q.text
     end
 
-    # qa = []
-    # submitted_responses.each do |sub|
-    #   qa << qs.zip(sub[:answers])
-
-    #   # puts "Q&A #{qs.zip(sub[:answers]).inspect}"
-    #   puts "A #{sub[:answers].inspect}"
-    # end
-
-
-    # qas = []
-    # i = 0
-    # quest.each do |x|
-    #   qa = []
-    #   qa << x.text
-    #   submitted_responses.each do |sub|
-    #     qa << sub[:answers][i]
-    #   end
-    #   i = i+1
-    #   qas << qa
-    # end
-
     qas = []
-    i = 0
+    count = 0
+
     quest.each do |x|
       qa = {}
-      qa = {:question => x.text }
       answers = []
+      qa = {:question => x.text }
       submitted_responses.each do |sub|
-        answers << sub[:answers][i]
+        answers << sub[:answers][count].to_i
       end
       qa[:answers] = answers
-      i = i+1
+      count = count + 1
       qas << qa
     end
 
-
-
-    # puts "QS -> #{qs.inspect}"
-      puts "QA -> #{qas.inspect}"
-
-    # qa.each do |q|
-    #   puts "Q -> #{q.inspect}"
-    # end
-
+    puts "Rating Questions"
+    puts "----------------"
+    qas.each do |arr|
+      ans = arr[:answers].sum / number_of_rating_questions.to_f
+      puts "Average Rating: #{ans} | Question: #{arr[:question]}"
+    end
 
   end
-
-
-
 end
 
 Parser.new
