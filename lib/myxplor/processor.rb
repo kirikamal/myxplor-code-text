@@ -18,11 +18,9 @@ module Myxplor
 	    @response_data = process_response_data
 	    @survey_data = process_survey_data
 
-
 	    process_ratings
 	    print_participation
 			print_ratings
-
 		end
 
 		def submitted_responses
