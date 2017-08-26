@@ -1,17 +1,17 @@
 # Myxplor Coding Test
 
-##How to run the program
+How to run the program
 
---s --> survey data file
---r --> respones data file
-sample-data --> csv file's store folder name
+--s  survey data file
+--r  respones data file
+sample-data is a folder wher all the csv files are stored.
 
-##Command
+Command
 
 ruby run.rb --s sample-data/survey-1.csv --r sample-data/survey-1-responses.csv
 
 
-
+About The Test
 Your task is to build a CLI application to parse and display survey data from CSV files, and display the results.
 
 ## Data Format
